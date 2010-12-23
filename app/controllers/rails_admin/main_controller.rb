@@ -250,11 +250,12 @@ module RailsAdmin
       statements = []
       values = []
       conditions = options[:conditions] || [""]
+      table_name = @abstract_model.model.table_name
 
       values = case range
-        when "Last 24 Hours" then "created_at >= '#{24.hours.ago}'"
-        when "Last Week" then "created_at >= '#{1.week.ago}'"
-        when "Last Month" then "created_at >= '#{1.month.ago}'"
+        when "Last 24 Hours" then "#{table_name}.created_at >= '#{24.hours.ago}'"
+        when "Last Week" then "#{table_name}.created_at >= '#{1.week.ago}'"
+        when "Last Month" then "#{table_name}.created_at >= '#{1.month.ago}'"
         else ""  
       end
       

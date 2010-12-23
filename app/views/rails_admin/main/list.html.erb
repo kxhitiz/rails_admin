@@ -38,7 +38,6 @@
 					// select the correct range by default
 					var myChoice = '<%= params[:range] %>' || 'All Time';
 					$$('select#range option').each(function(o) {
-						console.log(o.value)
 					    o.selected = o.value == myChoice;
 					});
 
