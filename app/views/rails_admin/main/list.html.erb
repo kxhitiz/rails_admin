@@ -31,6 +31,18 @@
         <h2><%= @page_name %></h2>
         <div id="quickAccess">
           <ul id="quick">
+			<li>
+			<%= select_tag "range", "<option>Today</option><option>Last Week</option><option>Last Month</option><option selected="selected">All Time</option>" %>
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('#range option[value="'+params[:range]+'"]').attr('selected', 'selected');
+			    $("#range").change(function() {
+			        var selection = $(this).val();
+					location.href = location.href + "?range=" + selection;
+			    });
+			});
+			</script>
+			</li>
             <li>
              <%= link_to(t("admin.history.name"), rails_admin_show_history_path, :class => "addlink") %>
             </li>

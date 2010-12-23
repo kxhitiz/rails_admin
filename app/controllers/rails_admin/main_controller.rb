@@ -243,6 +243,26 @@ module RailsAdmin
       conditions += values
       conditions != [""] ? {:conditions => conditions} : {}
     end
+    
+    def get_range_hash(options)
+      range = params[:range]
+      return {} unless range
+      statements = []
+      values = []
+      conditions = options[:conditions] || [""]
+      table_name = @abstract_model.model.table_name
+
+      values = case range
+        when "Today" then ["DATE(created_at) > DATE(?)", Time.now]
+        when "Last Week" then ["DATE(created_at) > DATE(?)", Time.now - 1.week]
+        when "Last Month" then ["DATE(created_at) > DATE(?)", Time.now - 1.month]
+        else then []  
+      end
+ 
+      conditions[0] += " AND " unless conditions == [""]
+      conditions += values
+      conditions != [""] ? {:conditions => conditions} : {}
+    end
 
     def get_attributes
       @attributes = params[@abstract_model.to_param] || {}
@@ -374,6 +394,7 @@ module RailsAdmin
       options.merge!(get_sort_reverse_hash)
       options.merge!(get_query_hash(options))
       options.merge!(get_filter_hash(options))
+      options.merge!(get_range_hash(options))
       per_page = @model_config.list.items_per_page
 
       # external filter
