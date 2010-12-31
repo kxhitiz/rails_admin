@@ -32,16 +32,23 @@
         <div id="quickAccess">
           <ul id="quick">
 			<li>
-			<%= select_tag "range", "<option>Today</option><option>Last Week</option><option>Last Month</option><option selected="selected">All Time</option>" %>
-			<script type="text/javascript">
-			$(document).ready(function() {
-				$('#range option[value="'+params[:range]+'"]').attr('selected', 'selected');
-			    $("#range").change(function() {
-			        var selection = $(this).val();
-					location.href = location.href + "?range=" + selection;
-			    });
-			});
-			</script>
+				<select id="range"><option>Today</option><option>Last Week</option><option>Last Month</option><option selected='selected'>All Time</option></select>
+				<script type="text/javascript">
+				document.observe("dom:loaded", function() {
+					// select the correct range by default
+					var myChoice = '<%= params[:range] %>' || 'All Time';
+					$$('select#range option').each(function(o) {
+						console.log(o.value)
+					    o.selected = o.value == myChoice;
+					});
+
+
+					// listen for select changes to redirect to URL
+					$("range").observe('change', function(event) {
+				    	var selection = $F(event.element());
+						location.href = location.href.split('?')[0] + "?range=" + selection;
+				    });
+				});
 			</li>
             <li>
              <%= link_to(t("admin.history.name"), rails_admin_show_history_path, :class => "addlink") %>

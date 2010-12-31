@@ -181,6 +181,10 @@ ul#quick li{
   margin-left:3px;
 }
 
+ul#quick li #range {
+  margin: 5px 5px;
+}
+
 ul#quick li ul{
   display:none;
   list-style-type:none;
